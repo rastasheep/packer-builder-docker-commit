@@ -35,6 +35,27 @@ func (d *DockerDriver) DeleteImage(id string) error {
 	return nil
 }
 
+func (d *DockerDriver) Commit(id string) (string, error) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	cmd := exec.Command("docker", "commit", id)
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Start(); err != nil {
+		return "", err
+	}
+
+	if err := cmd.Wait(); err != nil {
+		err = fmt.Errorf("Error committing container: %s\nStderr: %s",
+			err, stderr.String())
+		return "", err
+	}
+
+	return strings.TrimSpace(stdout.String()), nil
+}
+
 func (d *DockerDriver) Export(id string, dst io.Writer) error {
 	var stderr bytes.Buffer
 	cmd := exec.Command("docker", "export", id)
