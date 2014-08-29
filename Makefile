@@ -9,11 +9,17 @@ ECHO=echo
 else
 ECHO=/bin/echo -e
 endif
+BUILD_ARCH=386 amd64 arm
+BUILD_OS=linux darwin windows
 
 all: deps
 	@mkdir -p bin/
 	@$(ECHO) "$(OK_COLOR)==> Building$(NO_COLOR)"
-	@go build -v ./...
+	@gox -verbose \
+		-arch "$(BUILD_ARCH)" \
+		-os "$(BUILD_OS)" \
+		-output "bin/{{.Dir}}_{{.OS}}_{{.Arch}}" \
+		./...
 
 deps:
 	@$(ECHO) "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
