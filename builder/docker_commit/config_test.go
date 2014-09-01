@@ -7,6 +7,7 @@ import (
 func testConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"export_path": "foo",
+		"commit_tag":  "foo/bar:baz",
 		"image":       "bar",
 	}
 }
@@ -71,6 +72,20 @@ func TestConfigPrepare_image(t *testing.T) {
 
 	// Good image
 	raw["image"] = "path"
+	_, warns, errs = NewConfig(raw)
+	testConfigOk(t, warns, errs)
+}
+
+func TestConfigPrepare_commit(t *testing.T) {
+	raw := testConfig()
+
+	// No tag
+	delete(raw, "commit_tag")
+	_, warns, errs := NewConfig(raw)
+	testConfigErr(t, warns, errs)
+
+	// Good tag
+	raw["commit_tag"] = "rastasheep/ubuntu:12.04"
 	_, warns, errs = NewConfig(raw)
 	testConfigOk(t, warns, errs)
 }

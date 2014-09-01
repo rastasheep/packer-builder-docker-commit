@@ -22,7 +22,7 @@ func (s *StepCommit) Run(state multistep.StateBag) multistep.StepAction {
 	}
 
 	ui.Say("Committing the container")
-	imageId, err := driver.Commit(containerId)
+	imageId, err := driver.Commit(containerId, config.CommitTag)
 	if err != nil {
 		state.Put("error", err)
 		ui.Error(err.Error())

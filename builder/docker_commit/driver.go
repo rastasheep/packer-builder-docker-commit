@@ -9,7 +9,7 @@ import (
 // a mock driver can be shimmed in.
 type Driver interface {
 	// Commit the container to a tag
-	Commit(id string) (string, error)
+	Commit(id, tag string) (string, error)
 
 	// Delete an image that is imported into Docker
 	DeleteImage(id string) error

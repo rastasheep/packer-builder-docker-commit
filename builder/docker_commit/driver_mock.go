@@ -44,7 +44,7 @@ type MockDriver struct {
 	VerifyCalled bool
 }
 
-func (d *MockDriver) Commit(id string) (string, error) {
+func (d *MockDriver) Commit(id string, tag string) (string, error) {
 	d.CommitCalled = true
 	d.CommitContainerId = id
 	return d.CommitImageId, d.CommitErr

@@ -35,11 +35,11 @@ func (d *DockerDriver) DeleteImage(id string) error {
 	return nil
 }
 
-func (d *DockerDriver) Commit(id string) (string, error) {
+func (d *DockerDriver) Commit(id string, tag string) (string, error) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 
-	cmd := exec.Command("docker", "commit", id)
+	cmd := exec.Command("docker", "commit", id, tag)
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 

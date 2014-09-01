@@ -10,6 +10,7 @@ type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 
 	ExportPath string `mapstructure:"export_path"`
+	CommitTag  string `mapstructure:"commit_tag"`
 	Export     bool
 	Image      string
 	Pull       bool
@@ -60,6 +61,7 @@ func NewConfig(raws ...interface{}) (*Config, []string, error) {
 
 	templates := map[string]*string{
 		"export_path": &c.ExportPath,
+		"commit_tag":  &c.CommitTag,
 		"image":       &c.Image,
 	}
 
@@ -77,6 +79,11 @@ func NewConfig(raws ...interface{}) (*Config, []string, error) {
 	if c.Image == "" {
 		errs = packer.MultiErrorAppend(errs,
 			fmt.Errorf("image must be specified"))
+	}
+
+	if c.CommitTag == "" {
+		errs = packer.MultiErrorAppend(errs,
+			fmt.Errorf("commit tag must be specified"))
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {
